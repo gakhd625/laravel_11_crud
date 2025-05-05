@@ -1,54 +1,72 @@
 @extends('layouts.auth')
 
 @section('content')
-<div class="row justify-content-center mt-5">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">Register</div>
-            <div class="card-body">
+
+<div class="d-flex align-items-center justify-content-center vh-100">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 rounded">
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="fw-bold mb-0">Create an Account</h3>
+                <p class="small mb-0">Join us today!</p>
+            </div>
+            <div class="card-body bg-light p-4">
                 <form method="POST" action="{{ route('register') }}">
                     @csrf
-                    <div class="mb-3 row">
-                        <label class="col-md-4 col-form-label text-md-end">Name</label>
-                        <div class="col-md-6">
-                            <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required>
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
+                    
+                    <div class="mb-3">
+                        <label for="name" class="form-label fw-semibold">Full Name</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror rounded" name="name" value="{{ old('name') }}" required>
+                        @error('name')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
-                    <div class="mb-3 row">
-                        <label class="col-md-4 col-form-label text-md-end">Email Address</label>
-                        <div class="col-md-6">
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required>
-                            @error('email')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold">Email Address</label>
+                        <input type="email" class="form-control @error('email') is-invalid @enderror rounded" name="email" value="{{ old('email') }}" required>
+                        @error('email')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
-                    <div class="mb-3 row">
-                        <label class="col-md-4 col-form-label text-md-end">Password</label>
-                        <div class="col-md-6">
-                            <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
-                            @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror rounded" name="password" required>
+                        @error('password')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
-                    <div class="mb-3 row">
-                        <div class="col-md-6 offset-md-4">
-                            <button type="submit" class="btn btn-primary">Register</button>
-                        </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg rounded">Register</button>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <small class="text-muted">Already have an account?</small>
+                        <a href="{{ route('login') }}" class="text-decoration-none fw-bold">Login here</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    .bg-primary {
+        background-color: #007bff !important;
+    }
+    .rounded {
+        border-radius: 10px;
+    }
+    .shadow-sm {
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
 @endsection
