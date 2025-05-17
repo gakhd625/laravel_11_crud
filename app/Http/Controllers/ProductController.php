@@ -7,6 +7,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -33,7 +35,17 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request): RedirectResponse
     {
-        Product::create($request->validated());
+        $data = $request->validated();
+        $data['user_id'] = Auth::id();
+        
+        if ($request->hasFile('photo')) {
+            $photo = $request->file('photo');
+            $filename = time() . '_' . $photo->getClientOriginalName();
+            $userPath = 'user/' . Auth::id() . '/product-photos';
+            $data['photo'] = $photo->storeAs($userPath, $filename, 'private');
+        }
+
+        Product::create($data);
 
         return redirect()->route('products.index')
             ->withSuccess('New product is added successfully.');
@@ -60,9 +72,23 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product): RedirectResponse
     {
-        $product->update($request->validated());
+        $data = $request->validated();
+        
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($product->photo && Storage::disk('private')->exists($product->photo)) {
+                Storage::disk('private')->delete($product->photo);
+            }
 
-        return redirect()->back()
+            $photo = $request->file('photo');
+            $filename = time() . '_' . $photo->getClientOriginalName();
+            $userPath = 'user/' . Auth::id() . '/product-photos';
+            $data['photo'] = $photo->storeAs($userPath, $filename, 'private');
+        }
+
+        $product->update($data);
+
+        return redirect()->route('products.index')
             ->withSuccess('Product is updated successfully.');
     }
 

@@ -49,6 +49,17 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <label class="col-md-4 col-form-label text-md-end text-start"><strong>Photo:</strong></label>
+                    <div class="col-md-6" style="line-height: 35px;">
+                        @if($product->photo)
+                            <img src="{{ route('product.photo', basename($product->photo)) }}" class="img-thumbnail" style="max-height: 200px">
+                        @else
+                            <p>No photo available</p>
+                        @endif
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

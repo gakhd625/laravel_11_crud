@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="card-body">
-                <form action="{{ route('products.store') }}" method="post">
+                <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3 row">
@@ -67,6 +67,17 @@
                     </div>
 
                     <div class="mb-3 row">
+                        <label for="photo" class="col-md-4 col-form-label text-md-end text-start">Product Photo</label>
+                        <div class="col-md-6">
+                            <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo" accept="image/*">
+                            @error('photo')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                            <div id="photo-preview" class="mt-2"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 row">
                         <input type="submit" class="col-md-3 offset-md-5 btn btn-primary" value="Add Product">
                     </div>
 
@@ -75,5 +86,20 @@
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('photo').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('photo-preview').innerHTML = `
+                <img src="${e.target.result}" class="img-thumbnail" style="max-height: 200px">
+            `;
+        }
+        reader.readAsDataURL(file);
+    }
+});
+</script>
 
 @endsection
