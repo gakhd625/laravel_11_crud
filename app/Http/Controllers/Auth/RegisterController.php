@@ -30,6 +30,7 @@ class RegisterController extends Controller
 
         auth()->login($user);
 
-        return redirect()->route('products.index');
+        return redirect()->route('login')
+            ->with('success', 'Registration successful. You can now log in.');
     }
 }

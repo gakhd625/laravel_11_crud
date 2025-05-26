@@ -10,6 +10,13 @@
                 <p class="small mb-0">Access your account securely</p>
             </div>
             <div class="card-body bg-light p-4">
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
                     
