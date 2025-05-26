@@ -76,7 +76,7 @@
                             @enderror
                             @if($product->photo)
                                 <div class="mt-2">
-                                    <img src="{{ route('product.photo', basename($product->photo)) }}" class="img-thumbnail" style="max-height: 200px">
+                                    <img src="{{ route('product.photo', basename($product->photo)) }}" class="img-thumbnail" style="max-height: 200px" id="current-photo">
                                 </div>
                             @endif
                             <div id="photo-preview" class="mt-2"></div>
@@ -92,5 +92,24 @@
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('photo').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    const preview = document.getElementById('photo-preview');
+    const current = document.getElementById('current-photo');
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.innerHTML = `<img src="${e.target.result}" class="img-thumbnail" style="max-height: 200px">`;
+            if (current) current.style.display = 'none'; // Hide old photo if present
+        }
+        reader.readAsDataURL(file);
+    } else {
+        preview.innerHTML = '';
+        if (current) current.style.display = '';
+    }
+});
+</script>
 
 @endsection
